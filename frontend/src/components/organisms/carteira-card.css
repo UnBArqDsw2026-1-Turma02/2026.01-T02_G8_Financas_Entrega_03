@@ -1,0 +1,170 @@
+.carteira-card {
+  background: #CEE4F580;
+  border: 1px solid #d9ccef;
+  border-radius: 16px;
+  padding: 56px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.carteira-card__header {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #4c1d95;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.carteira-card__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+.carteira-card__valor {
+  font-size: 36px;
+  font-weight: 800;
+  color: #4F378A;
+  letter-spacing: -0.6px;
+  line-height: 1;
+  margin-top: -20px;
+}
+
+.carteira-card__valor--negativo {
+  color: #4F378A;
+}
+
+.carteira-card__bar {
+  display: flex;
+  width: 100%;
+  height: 52px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid #ffffff;
+  box-shadow: 0 1px 2px rgba(76, 29, 149, 0.08);
+}
+
+.carteira-card__seg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 10px;
+  min-width: 0;
+}
+
+.carteira-card__seg span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.carteira-card__seg--diario {
+  background: #6dbe64;
+}
+
+.carteira-card__seg--reserva {
+  background: #e89b3a;
+}
+
+.carteira-card__seg--extra {
+  background: #d8534f;
+}
+
+.carteira-card__seg--ultrapassagem {
+  background: repeating-linear-gradient(
+    45deg,
+    #b03a36,
+    #b03a36 6px,
+    #d8534f 6px,
+    #d8534f 12px
+  );
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.carteira-card__info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  color: #4a4658;
+  font-size: 13px;
+}
+
+.carteira-card__info-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4a4658;
+}
+
+.carteira-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e5dffb;
+}
+
+.carteira-alert--info {
+  border-color: #cfe3f7;
+  background: #eef5fc;
+}
+
+.carteira-alert--warn {
+  border-color: #f6e0b7;
+  background: #fdf6e6;
+}
+
+.carteira-alert--danger {
+  border-color: #f2c3c0;
+  background: #fbecea;
+}
+
+.carteira-alert__icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #4F378A;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.carteira-alert--warn .carteira-alert__icon {
+  background: #c98a1a;
+}
+
+.carteira-alert--danger .carteira-alert__icon {
+  background: #b03a36;
+}
+
+.carteira-alert__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.carteira-alert__title {
+  color: #1f1d2a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.carteira-alert__msg {
+  color: #4a4658;
+  font-size: 13px;
+  line-height: 1.4;
+}

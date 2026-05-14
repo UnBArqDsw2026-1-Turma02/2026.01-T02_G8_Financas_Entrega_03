@@ -1,0 +1,158 @@
+.app-shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+  background: #f8f7fb;
+  color: #1f1d2a;
+}
+
+.app-shell__sidebar {
+  background: white;
+  border-right: 1px solid #ececf2;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.app-shell__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px 12px;
+  border-bottom: 1px solid #f1f0f5;
+}
+
+.app-shell__brand-logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: #d6d4dc;
+}
+
+.app-shell__brand-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2a2735;
+}
+
+.app-shell__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.app-shell__nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: #4a4658;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 120ms;
+}
+
+.app-shell__nav-item:hover {
+  background: #e8f1f9;
+}
+
+.app-shell__nav-item--active {
+  background: #CEE4F5;
+  color: #4F378A;
+}
+
+.app-shell__nav-icon {
+  display: inline-flex;
+  color: inherit;
+}
+
+.app-shell__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-shell__topbar {
+  height: 56px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: white;
+  border-bottom: 1px solid #ececf2;
+}
+
+.app-shell__content {
+  flex: 1;
+  padding: 28px 32px 48px;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    grid-template-columns: 64px 1fr;
+  }
+  .app-shell__brand-name,
+  .app-shell__nav-item span:last-child {
+    display: none;
+  }
+  .app-shell__content {
+    padding: 20px 16px 32px;
+  }
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font: inherit;
+  color: #4a4658;
+}
+
+.user-menu__trigger:hover {
+  background: #f4f3f8;
+}
+
+.user-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: white;
+  border: 1px solid #ececf2;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  min-width: 140px;
+  padding: 4px;
+  z-index: 50;
+}
+
+.user-menu__item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  font: inherit;
+  color: #1f1d2a;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.user-menu__item:hover {
+  background: #f4f3f8;
+}

@@ -1,0 +1,142 @@
+.data-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: #1f1d2a;
+}
+
+.data-table thead th {
+  text-align: left;
+  font-weight: 500;
+  color: #4c1d95;
+  padding: 12px 12px;
+  border-bottom: 1px solid #ececf2;
+  font-size: 13px;
+}
+
+.data-table tbody td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f3f2f7;
+  color: #2a2735;
+  vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background: #fafafd;
+}
+
+.data-table__actions-h {
+  text-align: right;
+  width: 120px;
+}
+
+.data-table__icon-btn--accent {
+  color: #6d28d9;
+}
+
+.data-table__icon-btn--accent:hover {
+  background: #f1eefb;
+  color: #4c1d95;
+}
+
+.data-table__icon-btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.data-table__actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.data-table__icon-btn {
+  background: transparent;
+  border: none;
+  color: #6b6280;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 120ms, color 120ms;
+}
+
+.data-table__icon-btn:hover {
+  background: #f1eefb;
+  color: #4c1d95;
+}
+
+.data-table__icon-btn--danger:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.data-table__icon-btn + .data-table__icon-btn {
+  margin-left: 4px;
+}
+
+.data-table__empty {
+  padding: 36px;
+  text-align: center;
+  color: #71717a;
+  font-size: 14px;
+}
+
+.data-table__money {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.data-table__money--in {
+  color: #16a34a;
+}
+
+.data-table__money--out {
+  color: #dc2626;
+}
+
+.data-table__money--info {
+  color: #85B4D8;
+}
+
+.data-table__cat-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.data-table__cat-dot::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dot, #71717a);
+}
+
+.data-table__cat-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.data-table__hex {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 13px;
+  color: #4a4658;
+  text-transform: uppercase;
+}

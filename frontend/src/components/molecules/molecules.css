@@ -1,0 +1,91 @@
+.molecule-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.molecule-form-field__label {
+  font-weight: 600;
+  color: #1f1d2a;
+}
+
+.molecule-form-field__error {
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+.molecule-form-field__hint {
+  color: #71717a;
+  font-size: 12px;
+}
+
+.molecule-transacao-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  background: white;
+}
+
+.molecule-transacao-card__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.molecule-transacao-card__title {
+  font-weight: 600;
+  font-size: 15px;
+  color: #18181b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.molecule-transacao-card__meta {
+  font-size: 13px;
+  color: #52525b;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.molecule-transacao-card__value {
+  font-weight: 700;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.molecule-transacao-card__value--income {
+  color: #16a34a;
+}
+
+.molecule-transacao-card__value--outcome {
+  color: #dc2626;
+}
+
+.molecule-transacao-card__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.molecule-categoria-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #2a2735;
+}
+
+.molecule-categoria-tag__dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #71717a;
+}

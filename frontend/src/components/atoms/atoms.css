@@ -1,0 +1,211 @@
+.atom-input,
+.atom-select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  color: #1f1d2a;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.atom-input::placeholder {
+  color: #a1a1aa;
+}
+
+.atom-input:focus,
+.atom-select:focus {
+  outline: none;
+  border-color: #a5b4fc;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.atom-input:disabled,
+.atom-select:disabled {
+  background: #f4f3f8;
+  color: #71717a;
+  cursor: not-allowed;
+}
+
+.atom-textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  color: #1f1d2a;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 76px;
+}
+
+.atom-textarea::placeholder {
+  color: #a1a1aa;
+}
+
+.atom-textarea:focus {
+  outline: none;
+  border-color: #a5b4fc;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.atom-button {
+  padding: 8px 14px;
+  border: 1px solid #b6d4ec;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #CEE4F5;
+  color: #4F378A;
+  transition: background 120ms;
+}
+
+.atom-button:hover:not(:disabled) {
+  background: #b6d4ec;
+}
+
+.atom-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.atom-button--secondary {
+  background: #e4e4e7;
+  border-color: #d4d4d8;
+  color: #18181b;
+}
+
+.atom-button--danger {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: white;
+}
+
+.atom-button--danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.atom-button--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: #4F378A;
+}
+
+.atom-button--ghost:hover:not(:disabled) {
+  background: #e8f1f9;
+}
+
+.atom-color-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+.atom-color-picker:focus,
+.atom-color-picker:focus-within {
+  outline: none;
+  border-color: #a5b4fc;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.atom-color-picker__swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.atom-color-picker__hex {
+  font-family: inherit;
+  font-size: 14px;
+  color: #1f1d2a;
+  text-transform: uppercase;
+}
+
+.atom-color-picker__input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.atom-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #e4e4e7;
+  color: #27272a;
+  border: 1px solid transparent;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.atom-badge--success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.atom-badge--danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.atom-badge--warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.atom-badge--info {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.atom-badge--purple {
+  background: #f1eefb;
+  color: #4c1d95;
+}
+
+.atom-badge--outline {
+  background: transparent;
+  border-color: currentColor;
+}
+
+.atom-badge--outline.atom-badge--purple {
+  color: #85B4D8;
+}
+
+.atom-badge--outline.atom-badge--info {
+  color: #2563eb;
+}
+
+.atom-badge--outline.atom-badge--success {
+  color: #16a34a;
+}
+
+.atom-badge--outline.atom-badge--warning {
+  color: #d97706;
+}
+
+.atom-badge--outline.atom-badge--danger {
+  color: #dc2626;
+}
+
+.atom-badge--outline.atom-badge--default {
+  color: #71717a;
+}
