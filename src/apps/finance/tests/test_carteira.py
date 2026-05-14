@@ -117,11 +117,11 @@ class CarteiraApiTests(APITestCase):
 
     def test_get_carteira_exige_auth(self) -> None:
         self.client.force_authenticate(user=None)
-        resp = self.client.get("/api/v1/carteira/")
+        resp = self.client.get("/api/v1/finance/carteira/")
         self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_get_carteira_ok(self) -> None:
-        resp = self.client.get("/api/v1/carteira/")
+        resp = self.client.get("/api/v1/finance/carteira/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(
             set(resp.data.keys()),

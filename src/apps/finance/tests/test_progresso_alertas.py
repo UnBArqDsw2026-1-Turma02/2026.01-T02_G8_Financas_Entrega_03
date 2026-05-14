@@ -216,11 +216,11 @@ class ProgressoAlertasApiTests(APITestCase):
 
     def test_get_progresso_exige_auth(self) -> None:
         self.client.force_authenticate(user=None)
-        resp = self.client.get("/api/v1/progresso/")
+        resp = self.client.get("/api/v1/finance/progresso/")
         self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_get_progresso_retorna_streak_e_calendario(self) -> None:
-        resp = self.client.get("/api/v1/progresso/")
+        resp = self.client.get("/api/v1/finance/progresso/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(resp.data["ano"], ANO)
         self.assertEqual(resp.data["mes"], MES)
@@ -229,11 +229,11 @@ class ProgressoAlertasApiTests(APITestCase):
 
     def test_get_alertas_exige_auth(self) -> None:
         self.client.force_authenticate(user=None)
-        resp = self.client.get("/api/v1/alertas/")
+        resp = self.client.get("/api/v1/finance/alertas/")
         self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_get_alertas_sem_gastos_retorna_lista_vazia(self) -> None:
-        resp = self.client.get("/api/v1/alertas/")
+        resp = self.client.get("/api/v1/finance/alertas/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(resp.data["alertas"], [])
 
@@ -246,7 +246,7 @@ class ProgressoAlertasApiTests(APITestCase):
             pagamento=Pagamento.PIX,
             tipo_gasto=TipoGasto.VARIAVEL,
         )
-        resp = self.client.get("/api/v1/alertas/")
+        resp = self.client.get("/api/v1/finance/alertas/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         gatilhos = {a["gatilho"] for a in resp.data["alertas"]}
         self.assertIn(AlertaService.LIMITE_70, gatilhos)

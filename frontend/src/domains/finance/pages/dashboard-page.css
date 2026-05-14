@@ -215,15 +215,17 @@
 
 .dashboard-line {
   display: flex;
+  align-items: center;
   justify-content: center;
   width: 100%;
-  overflow-x: auto;
+  padding: 4px 0 8px;
 }
 
 .dashboard-line svg {
   width: 100%;
   height: auto;
   max-width: 100%;
+  display: block;
 }
 
 .dashboard-selector {

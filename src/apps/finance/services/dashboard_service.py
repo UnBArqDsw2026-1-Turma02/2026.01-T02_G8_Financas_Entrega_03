@@ -56,9 +56,7 @@ class DashboardService:
         ano, mes = self._resolver_ano_mes(ano, mes)
 
         total_entradas = self._soma(
-            Entrada.objects.filter(
-                usuario=usuario, data__year=ano, data__month=mes
-            )
+            Entrada.ativas_no_mes(usuario, ano, mes)
         )
         total_saidas_fixas_saidas = self._soma(
             Saida.objects.filter(
@@ -69,7 +67,7 @@ class DashboardService:
             )
         )
         total_parcelamentos = Decimal(
-            Parcelamento.objects.filter(usuario=usuario).aggregate(
+            Parcelamento.ativos_no_mes(usuario, ano, mes).aggregate(
                 s=Sum("valor_parcela")
             )["s"]
             or ZERO
@@ -111,9 +109,9 @@ class DashboardService:
             totais_por_id[item["categoria_id"]] = item["total"] or ZERO
 
         # Parcelamentos entram pelo valor da parcela do mês (mesma regra do
-        # `obter_visao_geral`: somatório dos parcelamentos ativos do usuário).
+        # `obter_visao_geral`: só os ativos na janela [início, início+N-1]).
         agregados_parcelas = (
-            Parcelamento.objects.filter(usuario=usuario)
+            Parcelamento.ativos_no_mes(usuario, ano, mes)
             .values("categoria_id")
             .annotate(total=Sum("valor_parcela"))
         )

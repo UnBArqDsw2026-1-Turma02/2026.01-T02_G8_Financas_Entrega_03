@@ -171,7 +171,7 @@ class SimulacaoGastoServiceTests(TestCase):
 
 
 class SimulacaoGastoApiTests(APITestCase):
-    url = "/api/v1/simular-gasto/"
+    url = "/api/v1/finance/simular-gasto/"
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(username="ivy", password="Senha!2026")

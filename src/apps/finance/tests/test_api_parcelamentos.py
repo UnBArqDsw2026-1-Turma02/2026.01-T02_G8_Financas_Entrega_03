@@ -14,7 +14,7 @@ User = get_user_model()
 
 
 class ParcelamentoCRUDApiTests(APITestCase):
-    url = "/api/v1/parcelamentos/"
+    url = "/api/v1/finance/parcelamentos/"
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(username="alice", password="Senha!2026")

@@ -194,7 +194,7 @@ class DashboardServiceTests(TestCase):
 
 
 class DashboardApiTests(APITestCase):
-    base_url = "/api/v1/dashboard/"
+    base_url = "/api/v1/finance/dashboard/"
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(username="api", password="Senha!2026")

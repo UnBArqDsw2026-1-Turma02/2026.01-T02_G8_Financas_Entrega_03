@@ -187,9 +187,9 @@ class OrcamentoService:
 
     @staticmethod
     def _renda_mensal(usuario, ano: int, mes: int) -> Decimal:
-        total = Entrada.objects.filter(
-            usuario=usuario, data__year=ano, data__month=mes
-        ).aggregate(s=Sum("valor"))["s"]
+        total = Entrada.ativas_no_mes(usuario, ano, mes).aggregate(
+            s=Sum("valor")
+        )["s"]
         return total or ZERO
 
     @staticmethod
@@ -200,7 +200,7 @@ class OrcamentoService:
             data__year=ano,
             data__month=mes,
         ).aggregate(s=Sum("valor"))["s"] or ZERO
-        parcelas = Parcelamento.objects.filter(usuario=usuario).aggregate(
+        parcelas = Parcelamento.ativos_no_mes(usuario, ano, mes).aggregate(
             s=Sum("valor_parcela")
         )["s"] or ZERO
         return saidas_fixas + parcelas

@@ -59,6 +59,16 @@ function shortDate(iso: string): string {
   return `${dd}/${mm}`
 }
 
+function longDate(iso: string): string {
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleDateString('pt-BR', {
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
+  })
+}
+
 interface SummaryCardProps {
   icon: ReactNode
   label: string
@@ -123,6 +133,7 @@ export default function DashboardPage() {
     if (!data.tendencia) return []
     return data.tendencia.dias.map((d) => ({
       label: shortDate(d.data),
+      tooltipLabel: longDate(d.data),
       value: Number(d.total_gasto),
     }))
   }, [data.tendencia])

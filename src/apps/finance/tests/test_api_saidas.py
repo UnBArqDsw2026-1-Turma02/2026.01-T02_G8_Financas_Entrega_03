@@ -14,7 +14,7 @@ User = get_user_model()
 
 
 class SaidaCRUDApiTests(APITestCase):
-    url = "/api/v1/saidas/"
+    url = "/api/v1/finance/saidas/"
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(username="alice", password="Senha!2026")

@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 class CategoriaCRUDApiTests(APITestCase):
-    url = "/api/v1/categorias/"
+    url = "/api/v1/finance/categorias/"
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(username="alice", password="Senha!2026")

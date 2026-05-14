@@ -306,11 +306,11 @@ class OrcamentoApiTests(APITestCase):
 
     def test_get_limite_diario_exige_auth(self) -> None:
         self.client.force_authenticate(user=None)
-        resp = self.client.get("/api/v1/limite-diario/")
+        resp = self.client.get("/api/v1/finance/limite-diario/")
         self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_get_limite_diario_ok(self) -> None:
-        resp = self.client.get("/api/v1/limite-diario/")
+        resp = self.client.get("/api/v1/finance/limite-diario/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(Decimal(resp.data["limite_calculado"]), Decimal("100.00"))
         self.assertIsNone(resp.data["limite_ajustado"])
@@ -319,7 +319,7 @@ class OrcamentoApiTests(APITestCase):
 
     def test_put_ajustar_limite_ok(self) -> None:
         resp = self.client.put(
-            "/api/v1/limite-diario/ajustar/",
+            "/api/v1/finance/limite-diario/ajustar/",
             {"limite_ajustado": "70.00"},
             format="json",
         )
@@ -329,7 +329,7 @@ class OrcamentoApiTests(APITestCase):
 
     def test_put_ajustar_limite_maior_que_calculado_400(self) -> None:
         resp = self.client.put(
-            "/api/v1/limite-diario/ajustar/",
+            "/api/v1/finance/limite-diario/ajustar/",
             {"limite_ajustado": "9999.00"},
             format="json",
         )
@@ -338,12 +338,12 @@ class OrcamentoApiTests(APITestCase):
     def test_get_reserva_retorna_saldo_nao_negativo(self) -> None:
         # Sem saídas no mês, a reserva acumula sobras dos dias fechados.
         # Aceitamos qualquer saldo não-negativo (depende do dia do mês).
-        resp = self.client.get("/api/v1/reserva/")
+        resp = self.client.get("/api/v1/finance/reserva/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertGreaterEqual(Decimal(resp.data["saldo"]), Decimal("0.00"))
 
     def test_get_extra_inicial_zerado(self) -> None:
-        resp = self.client.get("/api/v1/extra/")
+        resp = self.client.get("/api/v1/finance/extra/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(Decimal(resp.data["valor"]), Decimal("0.00"))
 
@@ -358,13 +358,13 @@ class OrcamentoApiTests(APITestCase):
             pagamento=Pagamento.PIX,
             tipo_gasto=TipoGasto.VARIAVEL,
         )
-        resp = self.client.get("/api/v1/limite-diario/")
+        resp = self.client.get("/api/v1/finance/limite-diario/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(Decimal(resp.data["gasto_dia"]), Decimal("250.00"))
 
         # Reserva pode estar zerada ou positiva dependendo do dia do mês;
         # mas o saldo nunca pode ser negativo.
-        resp_reserva = self.client.get("/api/v1/reserva/")
+        resp_reserva = self.client.get("/api/v1/finance/reserva/")
         self.assertEqual(resp_reserva.status_code, status.HTTP_200_OK)
         self.assertGreaterEqual(Decimal(resp_reserva.data["saldo"]), Decimal("0.00"))
 

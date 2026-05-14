@@ -22,7 +22,7 @@ def _set_data(transacao: Transacao, ano: int, mes: int, dia: int = 15) -> None:
 
 
 class ExtratoEndpointTests(APITestCase):
-    url = "/api/v1/extrato/"
+    url = "/api/v1/finance/extrato/"
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(username="alice", password="Senha!2026")

@@ -14,7 +14,7 @@ User = get_user_model()
 
 
 class EntradaCRUDApiTests(APITestCase):
-    url = "/api/v1/entradas/"
+    url = "/api/v1/finance/entradas/"
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(username="alice", password="Senha!2026")

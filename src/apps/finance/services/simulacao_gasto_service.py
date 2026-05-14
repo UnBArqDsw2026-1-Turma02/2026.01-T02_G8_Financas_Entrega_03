@@ -99,9 +99,9 @@ class SimulacaoGastoService:
 
     @staticmethod
     def _renda_mensal(usuario, ano: int, mes: int) -> Decimal:
-        total = Entrada.objects.filter(
-            usuario=usuario, data__year=ano, data__month=mes
-        ).aggregate(s=Sum("valor"))["s"]
+        total = Entrada.ativas_no_mes(usuario, ano, mes).aggregate(
+            s=Sum("valor")
+        )["s"]
         return total or Decimal("0")
 
     @staticmethod
@@ -112,7 +112,7 @@ class SimulacaoGastoService:
             data__year=ano,
             data__month=mes,
         ).aggregate(s=Sum("valor"))["s"] or Decimal("0")
-        parcelas = Parcelamento.objects.filter(usuario=usuario).aggregate(
+        parcelas = Parcelamento.ativos_no_mes(usuario, ano, mes).aggregate(
             s=Sum("valor_parcela")
         )["s"] or Decimal("0")
         return saidas_fixas + parcelas
