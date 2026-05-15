@@ -12,6 +12,7 @@ Traduz nos dois sentidos:
 from __future__ import annotations
 
 import json
+from decimal import Decimal
 from typing import Any
 
 from apps.provider_llm.clients.openai_client import OpenAiClient
@@ -91,4 +92,4 @@ class OpenAIAdapter(LLMPort):
             return {}
         if isinstance(raw, dict):
             return raw
-        return json.loads(raw)
+        return json.loads(raw, parse_float=Decimal)

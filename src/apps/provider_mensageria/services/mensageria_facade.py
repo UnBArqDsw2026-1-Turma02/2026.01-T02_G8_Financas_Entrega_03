@@ -11,6 +11,7 @@ o que reduz o acoplamento descrito nos diagramas de Sequência e Atividades.
 
 from __future__ import annotations
 
+import re
 from typing import Callable
 
 from apps.provider_llm.adapters.openai_adapter import OpenAIAdapter
@@ -29,6 +30,15 @@ class MensageriaFacade:
         "Olá! Sua conta do Telegram ainda não está vinculada à sua conta no "
         "Finanças. Acesse o app e vincule seu Telegram para conversar comigo."
     )
+
+    SYSTEM_PROMPT = (
+        "Você é o assistente do app Finanças, conversando em português "
+        "brasileiro com um usuário do Telegram. Ao chamar tools, use ponto "
+        "como separador decimal e no máximo duas casas decimais, sem pedir "
+        "confirmação ao usuário sobre o formato do número."
+    )
+
+    _RE_NUMERO_PTBR = re.compile(r"(?<!\d)(\d{1,3}(?:\.\d{3})+|\d+),(\d{1,2})(?!\d)")
 
     def __init__(
         self,
@@ -56,11 +66,15 @@ class MensageriaFacade:
         if usuario is None:
             return self.MSG_NAO_AUTENTICADO
 
+        texto_normalizado = self._normalizar_numeros(texto)
         registry = self._registry_factory(usuario=usuario)
         executor = self._executor_factory(registry)
-        historico = self._store.carregar(telegram_user_id)
+        historico = [
+            {"role": "system", "content": self.SYSTEM_PROMPT},
+            *self._store.carregar(telegram_user_id),
+        ]
         resposta = self._provider.conversar(
-            mensagem=texto,
+            mensagem=texto_normalizado,
             tools=registry.schemas(),
             tool_executor=executor,
             historico=historico,
@@ -69,3 +83,12 @@ class MensageriaFacade:
         if conteudo:
             self._store.adicionar_turno(telegram_user_id, texto, conteudo)
         return conteudo
+
+    @classmethod
+    def _normalizar_numeros(cls, texto: str) -> str:
+        """Converte números pt-BR (\"1.234,56\") para o formato esperado pelo LLM."""
+        def _troca(match: re.Match[str]) -> str:
+            inteiro = match.group(1).replace(".", "")
+            return f"{inteiro}.{match.group(2)}"
+
+        return cls._RE_NUMERO_PTBR.sub(_troca, texto)

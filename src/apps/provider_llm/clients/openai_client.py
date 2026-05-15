@@ -22,7 +22,7 @@ class OpenAiClient:
     def __init__(
         self,
         api_key: str | None = None,
-        model: str = "gpt-4o-mini",
+        model: str = "gpt-5.4-mini",
         client: Any = None,
     ) -> None:
         self._model = model

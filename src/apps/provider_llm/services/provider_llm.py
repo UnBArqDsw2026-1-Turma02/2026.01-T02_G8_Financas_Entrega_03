@@ -75,7 +75,7 @@ class ProviderLLM:
                     "type": "function",
                     "function": {
                         "name": tc.nome,
-                        "arguments": json.dumps(tc.argumentos),
+                        "arguments": json.dumps(tc.argumentos, default=str),
                     },
                 }
                 for tc in resposta.tool_calls
