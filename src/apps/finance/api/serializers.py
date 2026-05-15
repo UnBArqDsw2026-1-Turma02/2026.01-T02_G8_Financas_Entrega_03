@@ -27,7 +27,8 @@ class CategoriaSerializer(serializers.ModelSerializer):
     def validate_nome(self, value: str) -> str:
         if not value or not value.strip():
             raise serializers.ValidationError("Nome não pode ser vazio.")
-        return value
+        value = value.strip()
+        return value[0].upper() + value[1:]
 
     def validate_descricao(self, value: str) -> str:
         if not value or not value.strip():
@@ -51,7 +52,8 @@ class EntradaSerializer(serializers.ModelSerializer):
     def validate_nome(self, value: str) -> str:
         if not value or not value.strip():
             raise serializers.ValidationError("Nome não pode ser vazio.")
-        return value
+        value = value.strip()
+        return value[0].upper() + value[1:]
 
     def validate_valor(self, value: Decimal) -> Decimal:
         if value is None or value <= 0:
@@ -103,7 +105,8 @@ class ParcelamentoSerializer(serializers.ModelSerializer):
     def validate_nome(self, value: str) -> str:
         if not value or not value.strip():
             raise serializers.ValidationError("Nome não pode ser vazio.")
-        return value
+        value = value.strip()
+        return value[0].upper() + value[1:]
 
     def validate_valor(self, value: Decimal) -> Decimal:
         if value is None or value <= 0:
@@ -226,7 +229,8 @@ class SaidaSerializer(serializers.ModelSerializer):
     def validate_nome(self, value: str) -> str:
         if not value or not value.strip():
             raise serializers.ValidationError("Nome não pode ser vazio.")
-        return value
+        value = value.strip()
+        return value[0].upper() + value[1:]
 
     def validate_valor(self, value: Decimal) -> Decimal:
         if value is None or value <= 0:
