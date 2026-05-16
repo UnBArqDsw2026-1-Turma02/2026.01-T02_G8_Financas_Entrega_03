@@ -43,11 +43,12 @@ class CategoriaSerializer(serializers.ModelSerializer):
 
 class EntradaSerializer(serializers.ModelSerializer):
     recorrencia = serializers.BooleanField()
+    data = serializers.DateTimeField(required=False)
 
     class Meta:
         model = Entrada
         fields = ("id", "nome", "valor", "fonte", "recorrencia", "data")
-        read_only_fields = ("id", "data")
+        read_only_fields = ("id",)
 
     def validate_nome(self, value: str) -> str:
         if not value or not value.strip():
@@ -68,6 +69,7 @@ class ParcelamentoSerializer(serializers.ModelSerializer):
         max_digits=12, decimal_places=2, read_only=True
     )
     antecipadas_no_ciclo = serializers.SerializerMethodField()
+    data = serializers.DateTimeField(required=False)
 
     class Meta:
         model = Parcelamento
@@ -85,7 +87,6 @@ class ParcelamentoSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             "id",
-            "data",
             "parcela_atual",
             "valor_parcela",
             "antecipadas_no_ciclo",
@@ -212,11 +213,12 @@ class SaidaSerializer(serializers.ModelSerializer):
     categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all())
     pagamento = serializers.ChoiceField(choices=Pagamento.choices)
     tipo_gasto = serializers.ChoiceField(choices=TipoGasto.choices)
+    data = serializers.DateTimeField(required=False)
 
     class Meta:
         model = Saida
         fields = ("id", "nome", "valor", "categoria", "pagamento", "tipo_gasto", "data")
-        read_only_fields = ("id", "data")
+        read_only_fields = ("id",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

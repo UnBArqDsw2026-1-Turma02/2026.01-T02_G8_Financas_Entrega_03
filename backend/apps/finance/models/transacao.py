@@ -25,7 +25,7 @@ class Transacao(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(Decimal("0.01"))],
     )
-    data = models.DateTimeField(auto_now_add=True)
+    data = models.DateTimeField(default=timezone.now)
     usuario = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

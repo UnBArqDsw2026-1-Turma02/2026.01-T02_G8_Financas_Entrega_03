@@ -22,3 +22,22 @@ export async function me(): Promise<Usuario> {
   const { data } = await api.get<Usuario>('/v1/auth/me/')
   return data
 }
+
+export interface UpdateProfilePayload {
+  username?: string
+  email?: string
+}
+
+export async function updateProfile(payload: UpdateProfilePayload): Promise<Usuario> {
+  const { data } = await api.patch<Usuario>('/v1/auth/me/', payload)
+  return data
+}
+
+export interface ChangePasswordPayload {
+  current_password: string
+  new_password: string
+}
+
+export async function changePassword(payload: ChangePasswordPayload): Promise<void> {
+  await api.post('/v1/auth/me/password/', payload)
+}

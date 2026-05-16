@@ -40,6 +40,7 @@ export interface EntradaPayload {
   valor: string
   fonte: string
   recorrencia: boolean
+  data?: string
 }
 
 export interface Saida {
@@ -58,6 +59,7 @@ export interface SaidaPayload {
   categoria: string
   pagamento: Pagamento
   tipo_gasto: TipoGasto
+  data?: string
 }
 
 export interface Parcelamento {
@@ -79,6 +81,7 @@ export interface ParcelamentoPayload {
   categoria: string
   pagamento: Pagamento
   num_parcelas: number
+  data?: string
 }
 
 export type TransacaoTipo = 'entrada' | 'saida' | 'parcelamento'

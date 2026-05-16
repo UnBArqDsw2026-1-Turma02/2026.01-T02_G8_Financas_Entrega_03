@@ -9,7 +9,12 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.accounts.serializers import RegisterSerializer, UsuarioSerializer
+from apps.accounts.serializers import (
+    ChangePasswordSerializer,
+    RegisterSerializer,
+    UpdateProfileSerializer,
+    UsuarioSerializer,
+)
 from apps.accounts.services import AuthService
 
 
@@ -24,12 +29,34 @@ class RegisterView(generics.CreateAPIView):
         return Response(UsuarioSerializer(user).data, status=status.HTTP_201_CREATED)
 
 
-class MeView(generics.RetrieveAPIView):
-    serializer_class = UsuarioSerializer
+class MeView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ["get", "patch", "head", "options"]
 
     def get_object(self):
         return self.request.user
+
+    def get_serializer_class(self):
+        if self.request.method == "PATCH":
+            return UpdateProfileSerializer
+        return UsuarioSerializer
+
+    def patch(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = UpdateProfileSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(UsuarioSerializer(user).data)
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request: Request) -> Response:
+        serializer = ChangePasswordSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class TelegramVinculoView(APIView):

@@ -22,7 +22,25 @@ const RECORRENCIA_OPTIONS = [
 ]
 
 function todayISO(): string {
-  return new Date().toISOString().slice(0, 10)
+  const now = new Date()
+  const y = now.getFullYear()
+  const m = String(now.getMonth() + 1).padStart(2, '0')
+  const d = String(now.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function buildDataISO(dateStr: string): string {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  const now = new Date()
+  const dt = new Date(
+    y,
+    m - 1,
+    d,
+    now.getHours(),
+    now.getMinutes(),
+    now.getSeconds(),
+  )
+  return dt.toISOString()
 }
 
 export function EntradaForm({ initial, onSubmit }: EntradaFormProps) {
@@ -32,9 +50,9 @@ export function EntradaForm({ initial, onSubmit }: EntradaFormProps) {
   const [recorrencia, setRecorrencia] = useState(initial?.recorrencia ?? false)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
-  const dataDisplay = initial?.data
-    ? new Date(initial.data).toISOString().slice(0, 10)
-    : todayISO()
+  const [data, setData] = useState(
+    initial?.data ? new Date(initial.data).toISOString().slice(0, 10) : todayISO(),
+  )
 
   async function handle(e: FormEvent) {
     e.preventDefault()
@@ -43,6 +61,7 @@ export function EntradaForm({ initial, onSubmit }: EntradaFormProps) {
     if (!Number.isFinite(valorNum) || valorNum <= 0)
       return setError('Valor deve ser maior que zero.')
     if (!fonte.trim()) return setError('Fonte é obrigatória.')
+    if (!data) return setError('Data é obrigatória.')
     setError(null)
     setSubmitting(true)
     try {
@@ -51,6 +70,7 @@ export function EntradaForm({ initial, onSubmit }: EntradaFormProps) {
         valor: valorNum.toFixed(2),
         fonte: fonte.trim(),
         recorrencia,
+        data: buildDataISO(data),
       })
     } catch (err) {
       if (isAxiosError(err) && err.response?.data) {
@@ -88,7 +108,12 @@ export function EntradaForm({ initial, onSubmit }: EntradaFormProps) {
           />
         </FormField>
         <FormField label="Data">
-          <Input type="date" value={dataDisplay} readOnly disabled />
+          <Input
+            type="date"
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+            required
+          />
         </FormField>
       </div>
       <div className="organism-form__row">

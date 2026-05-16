@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import {
   ChevronDownIcon,
   HomeIcon,
@@ -8,6 +8,7 @@ import {
   CardIcon,
   ListIcon,
   PlugIcon,
+  SettingsIcon,
   TagIcon,
   UserIcon,
 } from '../atoms/Icon'
@@ -29,10 +30,12 @@ const NAV: NavItem[] = [
   { to: '/parcelamentos', label: 'Parcelamentos', icon: <CardIcon /> },
   { to: '/extrato', label: 'Extrato', icon: <ListIcon /> },
   { to: '/integracoes', label: 'Integrações', icon: <PlugIcon /> },
+  { to: '/configuracoes', label: 'Configurações', icon: <SettingsIcon /> },
 ]
 
 function UserMenu() {
   const { user, logout } = useAuth()
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -58,6 +61,16 @@ function UserMenu() {
       </button>
       {open && (
         <div className="user-menu__dropdown">
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false)
+              navigate('/configuracoes')
+            }}
+            className="user-menu__item"
+          >
+            Configurações
+          </button>
           <button type="button" onClick={logout} className="user-menu__item">
             Sair
           </button>

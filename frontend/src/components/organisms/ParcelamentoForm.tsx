@@ -22,7 +22,25 @@ export interface ParcelamentoFormProps {
 }
 
 function todayISO(): string {
-  return new Date().toISOString().slice(0, 10)
+  const now = new Date()
+  const y = now.getFullYear()
+  const m = String(now.getMonth() + 1).padStart(2, '0')
+  const d = String(now.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function buildDataISO(dateStr: string): string {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  const now = new Date()
+  const dt = new Date(
+    y,
+    m - 1,
+    d,
+    now.getHours(),
+    now.getMinutes(),
+    now.getSeconds(),
+  )
+  return dt.toISOString()
 }
 
 function CalendarIcon() {
@@ -60,9 +78,9 @@ export function ParcelamentoForm({
   const [numParcelas, setNumParcelas] = useState(String(initial?.num_parcelas ?? ''))
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
-  const dataDisplay = initial?.data
-    ? new Date(initial.data).toISOString().slice(0, 10)
-    : todayISO()
+  const [data, setData] = useState(
+    initial?.data ? new Date(initial.data).toISOString().slice(0, 10) : todayISO(),
+  )
 
   const categoriaSelecionada = useMemo(
     () => categorias.find((c) => c.id === categoria),
@@ -80,6 +98,7 @@ export function ParcelamentoForm({
     const parcelas = Number.parseInt(numParcelas, 10)
     if (!Number.isFinite(parcelas) || parcelas < 1)
       return setError('Número de parcelas deve ser >= 1.')
+    if (!data) return setError('Data é obrigatória.')
     setError(null)
     setSubmitting(true)
     try {
@@ -89,6 +108,7 @@ export function ParcelamentoForm({
         categoria,
         pagamento,
         num_parcelas: parcelas,
+        data: buildDataISO(data),
       })
     } catch (err) {
       if (isAxiosError(err) && err.response?.data) {
@@ -152,7 +172,12 @@ export function ParcelamentoForm({
           />
         </FormField>
         <FormField label="Data">
-          <Input type="date" value={dataDisplay} readOnly disabled />
+          <Input
+            type="date"
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+            required
+          />
         </FormField>
       </div>
       <div className="organism-form__row">

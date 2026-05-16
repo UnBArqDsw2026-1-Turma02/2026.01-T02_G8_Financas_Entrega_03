@@ -10,6 +10,7 @@ export default function RegisterPage() {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
   const [telegramId, setTelegramId] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -17,6 +18,10 @@ export default function RegisterPage() {
   async function onSubmit(event: FormEvent) {
     event.preventDefault()
     setError(null)
+    if (password !== passwordConfirm) {
+      setError('As senhas não coincidem.')
+      return
+    }
     setSubmitting(true)
     try {
       await register({
@@ -69,6 +74,16 @@ export default function RegisterPage() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
+            required
+          />
+        </label>
+        <label className="auth-field">
+          Confirmar senha
+          <input
+            type="password"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
             autoComplete="new-password"
             required
           />

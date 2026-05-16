@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import LoginPage from './domains/auth/pages/LoginPage'
 import RegisterPage from './domains/auth/pages/RegisterPage'
 import IntegracoesPage from './domains/auth/pages/IntegracoesPage'
+import ConfiguracoesPage from './domains/auth/pages/ConfiguracoesPage'
 import { PrivateRoute } from './domains/auth/components/PrivateRoute'
 import { AppShell } from './components/templates/AppShell'
 import EntradasPage from './domains/finance/pages/EntradasPage'
@@ -36,6 +37,7 @@ function App() {
           <Route path="/categorias" element={<CategoriasPage />} />
           <Route path="/extrato" element={<ExtratoPage />} />
           <Route path="/integracoes" element={<IntegracoesPage />} />
+          <Route path="/configuracoes" element={<ConfiguracoesPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AppShell>

@@ -53,7 +53,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [login])
 
   const value = useMemo<AuthState>(
-    () => ({ user, isAuthenticated: !!user, isLoading, login, register, logout }),
+    () => ({
+      user,
+      isAuthenticated: !!user,
+      isLoading,
+      login,
+      register,
+      logout,
+      setUser,
+    }),
     [user, isLoading, login, register, logout],
   )
 

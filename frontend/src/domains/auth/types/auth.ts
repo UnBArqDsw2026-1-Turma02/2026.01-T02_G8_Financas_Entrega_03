@@ -30,4 +30,5 @@ export interface AuthState {
   login: (payload: LoginPayload) => Promise<void>
   register: (payload: RegisterPayload) => Promise<void>
   logout: () => void
+  setUser: (user: Usuario) => void
 }

@@ -24,7 +24,25 @@ export interface SaidaFormProps {
 }
 
 function todayISO(): string {
-  return new Date().toISOString().slice(0, 10)
+  const now = new Date()
+  const y = now.getFullYear()
+  const m = String(now.getMonth() + 1).padStart(2, '0')
+  const d = String(now.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function buildDataISO(dateStr: string): string {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  const now = new Date()
+  const dt = new Date(
+    y,
+    m - 1,
+    d,
+    now.getHours(),
+    now.getMinutes(),
+    now.getSeconds(),
+  )
+  return dt.toISOString()
 }
 
 function CalendarIcon() {
@@ -62,9 +80,9 @@ export function SaidaForm({
   )
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
-  const dataDisplay = initial?.data
-    ? new Date(initial.data).toISOString().slice(0, 10)
-    : todayISO()
+  const [data, setData] = useState(
+    initial?.data ? new Date(initial.data).toISOString().slice(0, 10) : todayISO(),
+  )
 
   const categoriaSelecionada = useMemo(
     () => categorias.find((c) => c.id === categoria),
@@ -80,6 +98,7 @@ export function SaidaForm({
     if (!categoria) return setError('Selecione uma categoria.')
     if (!pagamento) return setError('Selecione a forma de pagamento.')
     if (!tipoGasto) return setError('Selecione o tipo de gasto.')
+    if (!data) return setError('Data é obrigatória.')
     setError(null)
     setSubmitting(true)
     try {
@@ -89,6 +108,7 @@ export function SaidaForm({
         categoria,
         pagamento,
         tipo_gasto: tipoGasto,
+        data: buildDataISO(data),
       })
     } catch (err) {
       if (isAxiosError(err) && err.response?.data) {
@@ -152,7 +172,12 @@ export function SaidaForm({
             />
           </FormField>
           <FormField label="Data">
-            <Input type="date" value={dataDisplay} readOnly disabled />
+            <Input
+              type="date"
+              value={data}
+              onChange={(e) => setData(e.target.value)}
+              required
+            />
           </FormField>
         </div>
         <div className="organism-form__row">
