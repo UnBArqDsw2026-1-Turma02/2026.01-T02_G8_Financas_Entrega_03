@@ -18,6 +18,8 @@ from decimal import Decimal
 from django.db.models import Sum
 from django.utils import timezone
 
+from django.db.models import Min
+
 from apps.finance.models import Categoria, Entrada, Parcelamento, Saida, TipoGasto
 
 CENTAVO = Decimal("0.01")
@@ -81,9 +83,9 @@ class DashboardService:
                 data__month=mes,
             )
         )
-        saldo = (
-            total_entradas - total_saidas_fixas - total_saidas_variaveis
-        ).quantize(CENTAVO)
+        # Saldo disponível é cumulativo: a sobra (ou déficit) de cada mês
+        # anterior é transportada para o mês corrente.
+        saldo = self._saldo_acumulado(usuario, ano, mes)
 
         return VisaoGeral(
             total_entradas=total_entradas,
@@ -91,6 +93,53 @@ class DashboardService:
             total_saidas_variaveis=total_saidas_variaveis,
             saldo_disponivel=saldo,
         )
+
+    def _saldo_acumulado(self, usuario, ano: int, mes: int) -> Decimal:
+        inicio = self._primeiro_mes_com_transacao(usuario)
+        alvo = ano * 12 + mes
+        if inicio is None or inicio > alvo:
+            return ZERO
+
+        saldo = ZERO
+        ref = inicio
+        while ref <= alvo:
+            ano_ref, mes_ref = divmod(ref - 1, 12)
+            mes_ref += 1
+            saldo += self._saldo_mes(usuario, ano_ref, mes_ref)
+            ref += 1
+        return saldo.quantize(CENTAVO)
+
+    def _saldo_mes(self, usuario, ano: int, mes: int) -> Decimal:
+        entradas = self._soma(Entrada.ativas_no_mes(usuario, ano, mes))
+        saidas = self._soma(
+            Saida.objects.filter(
+                usuario=usuario, data__year=ano, data__month=mes
+            )
+        )
+        parcelas = Decimal(
+            Parcelamento.ativos_no_mes(usuario, ano, mes).aggregate(
+                s=Sum("valor_parcela")
+            )["s"]
+            or ZERO
+        ).quantize(CENTAVO)
+        return entradas - saidas - parcelas
+
+    @staticmethod
+    def _primeiro_mes_com_transacao(usuario) -> int | None:
+        candidatos = [
+            Entrada.objects.filter(usuario=usuario).aggregate(d=Min("data"))[
+                "d"
+            ],
+            Saida.objects.filter(usuario=usuario).aggregate(d=Min("data"))["d"],
+            Parcelamento.objects.filter(usuario=usuario).aggregate(
+                d=Min("data")
+            )["d"],
+        ]
+        datas = [c for c in candidatos if c is not None]
+        if not datas:
+            return None
+        mais_antiga = min(datas)
+        return mais_antiga.year * 12 + mais_antiga.month
 
     def obter_gastos_por_categoria(
         self, usuario, ano: int | None = None, mes: int | None = None

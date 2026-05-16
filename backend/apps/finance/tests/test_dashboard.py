@@ -192,6 +192,74 @@ class DashboardServiceTests(TestCase):
         visao = self.service.obter_visao_geral(self.user)
         self.assertEqual(visao.total_entradas, Decimal("5000.00"))
 
+    def test_saldo_disponivel_acumula_meses_anteriores(self) -> None:
+        # Cria entrada e saída em um mês anterior para que a sobra seja
+        # carregada para o mês corrente.
+        novo = User.objects.create_user(username="acumula", password="x")
+        cat = Categoria.objects.create(
+            nome="Gastos", descricao="Diversos", cor="#000", usuario=novo
+        )
+        if MES == 1:
+            ano_ant, mes_ant = ANO - 1, 12
+        else:
+            ano_ant, mes_ant = ANO, MES - 1
+        data_ant = timezone.make_aware(datetime(ano_ant, mes_ant, 1, 12, 0))
+        data_atual = timezone.make_aware(datetime(ANO, MES, 1, 12, 0))
+
+        ent_ant = Entrada.objects.create(
+            nome="Salário mês anterior", valor=Decimal("3000.00"), usuario=novo
+        )
+        Transacao.objects.filter(pk=ent_ant.pk).update(data=data_ant)
+        sai_ant = Saida.objects.create(
+            nome="Aluguel mês anterior",
+            valor=Decimal("1000.00"),
+            usuario=novo,
+            categoria=cat,
+            pagamento=Pagamento.PIX,
+            tipo_gasto=TipoGasto.FIXO,
+        )
+        Transacao.objects.filter(pk=sai_ant.pk).update(data=data_ant)
+
+        ent_atual = Entrada.objects.create(
+            nome="Salário mês atual", valor=Decimal("500.00"), usuario=novo
+        )
+        Transacao.objects.filter(pk=ent_atual.pk).update(data=data_atual)
+
+        visao = self.service.obter_visao_geral(novo, ANO, MES)
+        # Sobra do mês anterior: 3000 - 1000 = 2000.
+        # Mês atual: +500 entrada, 0 saídas → saldo acumulado = 2500.
+        self.assertEqual(visao.total_entradas, Decimal("500.00"))
+        self.assertEqual(visao.saldo_disponivel, Decimal("2500.00"))
+
+    def test_saldo_disponivel_carrega_deficit_negativo(self) -> None:
+        novo = User.objects.create_user(username="deficit", password="x")
+        cat = Categoria.objects.create(
+            nome="Gastos", descricao="Diversos", cor="#000", usuario=novo
+        )
+        if MES == 1:
+            ano_ant, mes_ant = ANO - 1, 12
+        else:
+            ano_ant, mes_ant = ANO, MES - 1
+        data_ant = timezone.make_aware(datetime(ano_ant, mes_ant, 1, 12, 0))
+
+        # Mês anterior fechou em -200.
+        ent_ant = Entrada.objects.create(
+            nome="Renda parcial", valor=Decimal("800.00"), usuario=novo
+        )
+        Transacao.objects.filter(pk=ent_ant.pk).update(data=data_ant)
+        sai_ant = Saida.objects.create(
+            nome="Despesa alta",
+            valor=Decimal("1000.00"),
+            usuario=novo,
+            categoria=cat,
+            pagamento=Pagamento.PIX,
+            tipo_gasto=TipoGasto.FIXO,
+        )
+        Transacao.objects.filter(pk=sai_ant.pk).update(data=data_ant)
+
+        visao = self.service.obter_visao_geral(novo, ANO, MES)
+        self.assertEqual(visao.saldo_disponivel, Decimal("-200.00"))
+
 
 class DashboardApiTests(APITestCase):
     base_url = "/api/v1/finance/dashboard/"
